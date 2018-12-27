@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
     return new MaterialApp(
         //showPerformanceOverlay: true,
         debugShowCheckedModeBanner: false,
-        title: 'Flip Carousel',
+        title: 'Fourier Circles',
         theme: new ThemeData(
             primarySwatch: Colors.blue, backgroundColor: Colors.black),
         home: Scaffold(backgroundColor: Colors.black, body: Home())
@@ -38,7 +38,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    segs = _triangleWave(10, 70.0); //_squareWave(20, 70.0);
+    segs = _squareWave(20, 70.0); // _triangleWave(10, 70.0);
 
     animationController =
         AnimationController(vsync: this, duration: Duration(seconds: 5))
@@ -86,6 +86,36 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
     return lines;
   }
 
+  List<LineSegment2d> _chord() {
+    List<LineSegment2d> lines = [
+      LineSegment2d(
+        length: baseLength / 3,
+        node: 0,
+        root: true,
+        freqMultiplier: 1.0,
+        lineColor: Colors.green,
+        progress: 0.0,
+      ),
+      LineSegment2d(
+        length: baseLength / 3,
+        node: 1,
+        freqMultiplier: 1.5,
+        lineColor: Colors.blue,
+        progress: 0.0,
+        connectionNode: 0,
+      ),
+      LineSegment2d(
+        length: baseLength / 3.0,
+        node: 2,
+        freqMultiplier: 5 / 4,
+        lineColor: Colors.red,
+        progress: 0.0,
+        connectionNode: 1,
+      ),
+    ];
+    return lines;
+  }
+
   @override
   Widget build(BuildContext context) {
     double h = MediaQuery.of(context).size.height;
@@ -99,13 +129,13 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
             traceColor: Colors.lightGreen,
             trace: trace,
             points: segs,
-            thickness: 10.0,
-            stepPerUpdate: 2.0,
+            thickness: 8.0,
+            stepPerUpdate: 0.5,
           ),
           child: Container(
             // color: Colors.grey,
             height: h,
-            width: w - 20.0,
+            width: w,
           ),
         ),
       ],
@@ -254,3 +284,5 @@ class _ArtState extends State<Art> with TickerProviderStateMixin {
     ;
   }
 }
+
+enum chordType { major, minor }
