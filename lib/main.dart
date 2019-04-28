@@ -9,15 +9,17 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
-        //showPerformanceOverlay: true,
-        debugShowCheckedModeBanner: false,
-        title: 'Fourier Circles',
-        theme: new ThemeData(
-            primarySwatch: Colors.blue, backgroundColor: Colors.black),
-        home: Scaffold(backgroundColor: Colors.black, body: Home())
+      //showPerformanceOverlay: true,
+      debugShowCheckedModeBanner: false,
+      title: 'Fourier Circles',
+      theme: new ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: Scaffold(backgroundColor: Colors.black, body: Home()),
+      //  Home())
 
-        //new MyHomePage(),
-        );
+      //new MyHomePage(),
+    );
   }
 }
 
@@ -31,8 +33,19 @@ class Home extends StatefulWidget {
 class HomeState extends State<Home> with TickerProviderStateMixin {
   List<LineSegment2d> segs;
   AnimationController animationController;
-  double baseLength = 100.0 * (4 / pi);
+  // BaseLength is the referene length, since the waves lengths(eg amplitudeor radius)
+  // are all related to eachother by specific ratios, I can use this variable to tweak
+  // the lengths of the overall system
+  double baseLength = 100.0;
 
+  double lineThickness = 8.0;
+  double stepPerUpdate = 0.5; // How quickly the wave progresses
+  // 1.0 means that it will take 100 frames to get a quarter of the circle
+  // and 400 frames to make a full rotation(if the line has no multipliers)
+  // Flutter usually runs at around 60 frames per second, meaning it updates
+  // once every ~ 16ms so to get the time it takes for one rotation
+  // do  stepsPerUpdate  x 1 circle over 400 steps x 60frames over second = circles per second
+  // the inverse gives seconds per circle which is around 6.5 for 1.0
   List trace = [];
 
   @override
@@ -50,7 +63,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
 
   List<LineSegment2d> _squareWave(int numoflines, double line1Len,
       {List<Color> lineColors}) {
-    // Square Wave is described here https://en.wikipedia.org/wiki/Square_wave
+    // Square Wave is described here https:en.wikipedia.org/wiki/Square_wave
     List<LineSegment2d> lines = [];
     for (int i = 0; i < numoflines; i++) {
       lines.add(LineSegment2d(
@@ -69,7 +82,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
 
   List<LineSegment2d> _triangleWave(int numoflines, double line1Len,
       {List<Color> lineColors}) {
-    // Square Wave is described here https://en.wikipedia.org/wiki/Square_wave
+    // Square Wave is described here https:/en.wikipedia.org/wiki/Square_wave
     List<LineSegment2d> lines = [];
     for (int i = 0; i < numoflines; i++) {
       lines.add(LineSegment2d(
@@ -129,8 +142,8 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
             traceColor: Colors.lightGreen,
             trace: trace,
             points: segs,
-            thickness: 8.0,
-            stepPerUpdate: 0.5,
+            thickness: lineThickness,
+            stepPerUpdate: stepPerUpdate,
           ),
           child: Container(
             // color: Colors.grey,
@@ -255,9 +268,9 @@ class _ArtState extends State<Art> with TickerProviderStateMixin {
         AnimationController(vsync: this, duration: Duration(seconds: 5))
           ..addListener(() {
             setState(() {});
-            //segs[0].progress += 1.0;
+            // segs[0].progress += 1.0;
             segs.forEach((seg) {
-              seg.progress += 5.0;
+              seg.progress += 2.0;
             });
             setState(() {});
           })
@@ -268,20 +281,62 @@ class _ArtState extends State<Art> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     double h = MediaQuery.of(context).size.height;
     double w = MediaQuery.of(context).size.width;
-    return CustomPaint(
-      painter: LinePainter(
-        points: segs,
-        thickness: 10.0,
-        xRootFromCenter: 0.0,
-        yRootFromCenter: 0.0,
-      ),
-      child: Container(
-        // color: Colors.grey,
-        height: h,
-        width: w,
-      ),
+    return Stack(
+      children: <Widget>[
+        CustomPaint(
+          painter: LinePainter(
+            points: segs,
+            thickness: 10.0,
+            xRootFromCenter: 0.0,
+            yRootFromCenter: 0.0,
+          ),
+          child: Container(
+            // color: Colors.grey,
+            height: h,
+            width: w,
+          ),
+        ),
+        ShapeCenteredAboutNode(
+          shape: Shape(
+              shapeType: ShapeType.polygon,
+              location: segs[7].nodeLocation,
+              color: Colors.blue,
+              polygon: Polygon(
+                sidelen: 30.0,
+                sides: 6,
+              )),
+        ),
+        ShapeCenteredAboutNode(
+          shape: Shape(
+              shapeType: ShapeType.polygon,
+              location: segs[8].nodeLocation,
+              color: Colors.red,
+              polygon: Polygon(
+                sidelen: 50.0,
+                sides: 4,
+              )),
+        ),
+        ShapeCenteredAboutNode(
+          shape: Shape(
+              shapeType: ShapeType.polygon,
+              location: segs[9].nodeLocation,
+              color: Colors.purple,
+              polygon: Polygon(
+                sidelen: 60.0,
+                sides: 3,
+              )),
+        ),
+        ShapeCenteredAboutNode(
+          shape: Shape(
+              shapeType: ShapeType.circle,
+              color: Colors.green,
+              location: segs[3].nodeLocation,
+              circle: Circle(
+                radius: 30.0,
+              )),
+        ),
+      ],
     );
-    ;
   }
 }
 
