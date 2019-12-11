@@ -9,7 +9,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
-      //showPerformanceOverlay: true,
+     // showPerformanceOverlay: true,
       debugShowCheckedModeBanner: false,
       title: 'Fourier Circles',
       theme: new ThemeData(
@@ -39,7 +39,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   double baseLength = 100.0;
 
   double lineThickness = 8.0;
-  double stepPerUpdate = 0.5; // How quickly the wave progresses
+  double stepPerUpdate = 2.5; // How quickly the wave progresses
   // 1.0 means that it will take 100 frames to get a quarter of the circle
   // and 400 frames to make a full rotation(if the line has no multipliers)
   // Flutter usually runs at around 60 frames per second, meaning it updates
@@ -51,7 +51,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    segs = _squareWave(20, 70.0); // _triangleWave(10, 70.0);
+    segs =_squareWave(5, 70.0); // _triangleWave(10, 70.0); //
 
     animationController =
         AnimationController(vsync: this, duration: Duration(seconds: 5))

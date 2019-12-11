@@ -6,3 +6,6 @@ A new Flutter application.
 
 For help getting started with Flutter, view our online
 [documentation](https://flutter.io/).
+<p align='center'>
+<img src="https://github.com/cshannon3/fourier_circles_f/blob/master/screenshots/3b1b.mp4" width='300'>
+</p>
