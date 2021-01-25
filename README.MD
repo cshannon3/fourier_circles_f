@@ -7,7 +7,7 @@ A new Flutter application.
 For help getting started with Flutter, view our online
 [documentation](https://flutter.io/).
 <p align='right'>
-<img src="https://github.com/cshannon3/fourier_circles_f/blob/master/screenshots/circle.gif" height='300'>
+<img src="https://raw.githubusercontent.com/cshannon3/fourier_circles_f/master/screenshots/circle.gif" height='300'>
 </p>
 <p align='right'>
 <img src="https://github.com/cshannon3/fourier_circles_f/blob/master/screenshots/3b1b.gif" height='300'>
